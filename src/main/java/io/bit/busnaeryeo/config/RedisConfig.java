@@ -20,36 +20,43 @@ import java.time.Duration;
 @EnableRedisRepositories
 public class RedisConfig {
     @Value("${spring.redis.host}")
-    private String redisHost;
+    private String redisHost; // 13.124.75.114
 
     @Value("${spring.redis.port}")
-    private int redisPort;
+    private int redisPort; //6379
 
     @Value("${spring.redis.password}")
     private String redisPassword;
 
-    @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
+
+//    private JedisConnectionFactory jedisConnectionFactory;
 // 비밀번호 설정을 해서 안되는듯????
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory() {
-//
-//        return new LettuceConnectionFactory(redisHost, redisPort);
-//    }
-
     @Bean
-    JedisConnectionFactory jedisConnectionFactory(){
+    public RedisConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPort(redisPort);
+        redisStandaloneConfiguration.setPassword(redisPassword);
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
 
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisHost,redisPort);
-        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
-
-        JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfigurationBuilder = JedisClientConfiguration.builder();
-        jedisClientConfigurationBuilder.connectTimeout(Duration.ofSeconds(3600));
-
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfigurationBuilder.build());
-
-        return  jedisConnectionFactory;
+        return new LettuceConnectionFactory(redisHost, redisPort);
     }
+
+
+////아래꺼를 참고해서 위에 보안해서 고침
+//    @Bean
+//    JedisConnectionFactory jedisConnectionFactory(){
+//
+//        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisHost,redisPort);
+//        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
+//
+//        JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfigurationBuilder = JedisClientConfiguration.builder();
+//        jedisClientConfigurationBuilder.connectTimeout(Duration.ofSeconds(3600));
+//
+//        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfigurationBuilder.build());
+//
+//        return  jedisConnectionFactory;
+//    }
 
     @Bean
     public RedisTemplate<?, ?> redisTemplate() {
@@ -57,7 +64,7 @@ public class RedisConfig {
         // 아래 두 라인을 작성하지 않으면, key값이 \xac\xed\x00\x05t\x00\x03sol 이렇게 조회된다.
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
 }
