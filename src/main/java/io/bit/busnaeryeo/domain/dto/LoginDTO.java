@@ -1,4 +1,4 @@
-package io.bit.busnaeryeo.domain;
+package io.bit.busnaeryeo.domain.dto;
 
 import lombok.Data;
 

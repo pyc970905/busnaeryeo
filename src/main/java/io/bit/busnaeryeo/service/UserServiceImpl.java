@@ -1,8 +1,8 @@
 package io.bit.busnaeryeo.service;
 
-import io.bit.busnaeryeo.domain.LoginDTO;
-import io.bit.busnaeryeo.domain.User;
-import io.bit.busnaeryeo.domain.UserDTO;
+import io.bit.busnaeryeo.domain.dto.LoginDTO;
+import io.bit.busnaeryeo.domain.etity.User;
+import io.bit.busnaeryeo.domain.dto.UserDTO;
 import io.bit.busnaeryeo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

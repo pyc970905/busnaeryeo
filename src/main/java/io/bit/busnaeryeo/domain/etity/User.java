@@ -1,5 +1,6 @@
-package io.bit.busnaeryeo.domain;
+package io.bit.busnaeryeo.domain.etity;
 
+import io.bit.busnaeryeo.domain.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

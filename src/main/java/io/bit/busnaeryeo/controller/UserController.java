@@ -1,8 +1,8 @@
 package io.bit.busnaeryeo.controller;
 
-import io.bit.busnaeryeo.domain.LoginDTO;
-import io.bit.busnaeryeo.domain.User;
-import io.bit.busnaeryeo.domain.UserDTO;
+import io.bit.busnaeryeo.domain.dto.LoginDTO;
+import io.bit.busnaeryeo.domain.etity.User;
+import io.bit.busnaeryeo.domain.dto.UserDTO;
 import io.bit.busnaeryeo.jwt.JwtTokenProvider;
 import io.bit.busnaeryeo.service.RedisServiceImpl;
 import io.bit.busnaeryeo.service.UserServiceImpl;

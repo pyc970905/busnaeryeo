@@ -53,8 +53,8 @@ public class JwtTokenProvider {
     }
 
     // Create token
-    public String createToken(String email, List<String> roles, long tokenValid) {
-        Claims claims = Jwts.claims().setSubject(email); // claims 생성 및 payload 설정
+    public String createToken(String username, List<String> roles, long tokenValid) {
+        Claims claims = Jwts.claims().setSubject(username); // claims 생성 및 payload 설정
         claims.put("roles", roles); // 권한 설정, key/ value 쌍으로 저장
 
         Date date = new Date();
