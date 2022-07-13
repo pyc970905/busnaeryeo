@@ -17,9 +17,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //일반 회원용 회원가입
     public Long join(UserDTO userDTO) {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         Long userId = userRepository.save(userDTO.toEntity()).getId();
+
+        return userId;
+
+    }
+    public Long joinAdmin(UserDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        Long userId = userRepository.save(userDTO.toAdminEntity()).getId();
 
         return userId;
 

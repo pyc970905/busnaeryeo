@@ -42,4 +42,17 @@ public class UserDTO {
                 .build();
         return user;
     }
+    public User toAdminEntity() {
+        User user = User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .realName(realName)
+                .gender(gender)
+                .address(address)
+                .birthDay(birthDay)
+                .roles(Collections.singletonList("ROLE_ADMIN"))
+                .build();
+        return user;
+    }
 }

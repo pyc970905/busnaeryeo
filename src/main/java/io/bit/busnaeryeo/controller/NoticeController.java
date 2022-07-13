@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api//notice")
+@RequestMapping("/api/notice")
 public class NoticeController {
 
     private final NoticeServiceImpl noticeService;
@@ -30,8 +30,8 @@ public class NoticeController {
         PagedModel<EntityModel<Notice>> model = assembler.toModel(notices);
         return  new ResponseEntity(model, HttpStatus.CREATED);
     }
-
-    @PostMapping
+    //공지 등록
+    @PostMapping("/admin")
     public ResponseEntity<?> postNotice(@RequestBody NoticeDTO noticeDTO) {
 
         Notice persistNotice = (noticeService.save(noticeDTO));
@@ -40,7 +40,7 @@ public class NoticeController {
     }
 
     //공지 수정
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<?> putNotice(@PathVariable("id") Long id, @RequestBody NoticeDTO noticeDTO) {
         Notice persistNotice = noticeService.findNoticeById(id);
         NoticeDTO modifyNotice = persistNotice.ToDTO();
@@ -49,7 +49,7 @@ public class NoticeController {
     }
 
     //공지 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteNotice(@PathVariable("id") Long id) {
         noticeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

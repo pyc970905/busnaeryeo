@@ -35,6 +35,14 @@ public class UserController {
                 ResponseEntity.badRequest().build();
     }
 
+    @PostMapping("/join/admin")
+    public ResponseEntity joinAdmin(@RequestBody @Valid UserDTO userDTO) {
+        Long result = userService.join(userDTO);
+        return result != null ?
+                ResponseEntity.ok().body("회원가입을 축하합니다!") :
+                ResponseEntity.badRequest().build();
+    }
+
     // 로그인
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO loginDTO, HttpServletResponse response) {
