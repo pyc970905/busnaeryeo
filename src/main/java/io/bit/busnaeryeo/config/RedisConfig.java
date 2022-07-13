@@ -29,6 +29,7 @@ public class RedisConfig {
 
     @Value("${spring.redis.timeout}")
     private int  redisTimeOut;
+
 // 비밀번호 설정을 해서 안되는듯????
 //    @Bean
 //    public RedisConnectionFactory redisConnectionFactory() {
