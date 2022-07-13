@@ -37,7 +37,7 @@ public class UserController {
 
     @PostMapping("/join/admin")
     public ResponseEntity joinAdmin(@RequestBody @Valid UserDTO userDTO) {
-        Long result = userService.join(userDTO);
+        Long result = userService.joinAdmin(userDTO);
         return result != null ?
                 ResponseEntity.ok().body("회원가입을 축하합니다!") :
                 ResponseEntity.badRequest().build();
@@ -49,7 +49,7 @@ public class UserController {
         // 유저 존재 확인
         User user = userService.findUser(loginDTO);
         // 비밀번호 체크
-        userService.checkPassword(user, loginDTO );
+        userService.checkPassword(user, loginDTO);
         // 어세스, 리프레시 토큰 발급 및 헤더 설정
         String accessToken = jwtTokenProvider.createAccessToken(user.getUsername(), user.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUsername(), user.getRoles());
