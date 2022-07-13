@@ -27,8 +27,6 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String redisPassword;
 
-    @Value("${spring.redis.timeout}")
-    private int  redisTimeOut;
 
 // 비밀번호 설정을 해서 안되는듯????
 //    @Bean
@@ -43,7 +41,7 @@ public class RedisConfig {
         redisStandaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
 
         JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfigurationBuilder = JedisClientConfiguration.builder();
-        jedisClientConfigurationBuilder.connectTimeout(Duration.ofSeconds(redisTimeOut));
+        jedisClientConfigurationBuilder.connectTimeout(Duration.ofSeconds(3600));
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfigurationBuilder.build());
 
