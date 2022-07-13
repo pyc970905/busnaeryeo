@@ -1,5 +1,6 @@
 package io.bit.busnaeryeo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,10 +28,12 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String redisPassword;
 
-
+    @Autowired
+    private JedisConnectionFactory jedisConnectionFactory;
 // 비밀번호 설정을 해서 안되는듯????
 //    @Bean
 //    public RedisConnectionFactory redisConnectionFactory() {
+//
 //        return new LettuceConnectionFactory(redisHost, redisPort);
 //    }
 
@@ -54,7 +57,7 @@ public class RedisConfig {
         // 아래 두 라인을 작성하지 않으면, key값이 \xac\xed\x00\x05t\x00\x03sol 이렇게 조회된다.
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        redisTemplate.setConnectionFactory(jedisConnectionFactory);
         return redisTemplate;
     }
 }
