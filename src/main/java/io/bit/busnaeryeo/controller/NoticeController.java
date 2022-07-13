@@ -5,6 +5,7 @@ import io.bit.busnaeryeo.domain.etity.Notice;
 import io.bit.busnaeryeo.service.NoticeServiceImpl;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/notice")
+@Log4j2
 public class NoticeController {
 
     private final NoticeServiceImpl noticeService;
@@ -43,8 +45,13 @@ public class NoticeController {
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> putNotice(@PathVariable("id") Long id, @RequestBody NoticeDTO noticeDTO) {
         Notice persistNotice = noticeService.findNoticeById(id);
+        log.info(persistNotice);
         NoticeDTO modifyNotice = persistNotice.ToDTO();
+        log.info(modifyNotice);
+        modifyNotice.setContent(noticeDTO.getContent());
+        modifyNotice.setTitle(noticeDTO.getTitle());
         NoticeDTO saveNotice = noticeService.save(modifyNotice).ToDTO();
+        log.info(saveNotice);
         return new ResponseEntity<>(saveNotice, HttpStatus.OK);
     }
 
