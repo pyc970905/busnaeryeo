@@ -17,7 +17,7 @@ public class RedisServiceImpl implements RedisService {
     public void setValues(String token, String username){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
 //        values.set(name, age);
-        values.set(token, username, Duration.ofMinutes(3));  // 3분 뒤 메모리에서 삭제된다.
+        values.set(token, username, Duration.ofMinutes(30));  // 30분 뒤 메모리에서 삭제된다.
     }
 
     // 키값으로 벨류 가져오기
