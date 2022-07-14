@@ -2,6 +2,7 @@ package io.bit.busnaeryeo.controller;
 
 import io.bit.busnaeryeo.domain.dto.NoticeDTO;
 import io.bit.busnaeryeo.domain.etity.Notice;
+import io.bit.busnaeryeo.repository.NoticeRepository;
 import io.bit.busnaeryeo.service.NoticeServiceImpl;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class NoticeController {
 
     private final NoticeServiceImpl noticeService;
+    private final NoticeRepository noticeRepository;
 
     //공지 보기
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,6 +34,8 @@ public class NoticeController {
         PagedModel<EntityModel<Notice>> model = assembler.toModel(notices);
         return  new ResponseEntity(model, HttpStatus.OK);
     }
+
+
     //공지 등록
     @PostMapping("/admin")
     public ResponseEntity<?> postNotice(@RequestBody NoticeDTO noticeDTO) {
