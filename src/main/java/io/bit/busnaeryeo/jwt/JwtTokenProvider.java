@@ -59,6 +59,7 @@ public class JwtTokenProvider {
 
         Date date = new Date();
         return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims) // 발행 유저 정보 저장
                 .setIssuedAt(date) // 발행 시간 저장
                 .setExpiration(new Date(date.getTime() + tokenValid)) // 토큰 유효 시간 저장
@@ -117,7 +118,7 @@ public class JwtTokenProvider {
         //// return tokenRepository.existsByRefreshToken(refreshToken);
     }
 
-    // Email로 권한 정보 가져오기
+    // username으로 권한 정보 가져오기
     public List<String> getRoles(String username) {
         return userRepository.findByUsername(username).get().getRoles();
     }

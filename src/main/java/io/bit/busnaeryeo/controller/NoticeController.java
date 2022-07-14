@@ -30,7 +30,7 @@ public class NoticeController {
     public ResponseEntity<?> getNotices(@PageableDefault Pageable pageable, PagedResourcesAssembler<Notice> assembler) {
         Page<Notice> notices = noticeService.findAll(pageable);
         PagedModel<EntityModel<Notice>> model = assembler.toModel(notices);
-        return  new ResponseEntity(model, HttpStatus.CREATED);
+        return  new ResponseEntity(model, HttpStatus.OK);
     }
     //공지 등록
     @PostMapping("/admin")
