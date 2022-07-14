@@ -1,19 +1,14 @@
 package io.bit.busnaeryeo.service;
 
-import antlr.collections.List;
 import io.bit.busnaeryeo.domain.dto.NoticeDTO;
-import io.bit.busnaeryeo.domain.etity.Notice;
+import io.bit.busnaeryeo.domain.entity.Notice;
 import io.bit.busnaeryeo.repository.NoticeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional

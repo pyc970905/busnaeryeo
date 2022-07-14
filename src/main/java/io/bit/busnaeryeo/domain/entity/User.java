@@ -1,4 +1,4 @@
-package io.bit.busnaeryeo.domain.etity;
+package io.bit.busnaeryeo.domain.entity;
 
 import io.bit.busnaeryeo.domain.dto.UserDTO;
 import lombok.AllArgsConstructor;

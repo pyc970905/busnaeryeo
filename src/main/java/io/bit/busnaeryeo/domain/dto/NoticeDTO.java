@@ -1,9 +1,12 @@
 package io.bit.busnaeryeo.domain.dto;
 
-import io.bit.busnaeryeo.domain.etity.Notice;
-import io.bit.busnaeryeo.domain.etity.User;
+import io.bit.busnaeryeo.domain.entity.Notice;
+import io.bit.busnaeryeo.domain.entity.User;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -12,7 +15,12 @@ public class NoticeDTO {
     private Long id;
     private String title;
     private String content;
-    private User user;
+
+    private String writer;
+
+    private String createdDate;
+
+    private String modifiedDate;
 
 
     public Notice ToEntity() {
@@ -21,7 +29,7 @@ public class NoticeDTO {
                  .id(id)
                  .title(title)
                  .content(content)
-                 .user(user)
+                 .writer(writer)
                  .build();
 
         return notice;

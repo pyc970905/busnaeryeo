@@ -1,7 +1,7 @@
 package io.bit.busnaeryeo.controller;
 
 import io.bit.busnaeryeo.domain.dto.NoticeDTO;
-import io.bit.busnaeryeo.domain.etity.Notice;
+import io.bit.busnaeryeo.domain.entity.Notice;
 import io.bit.busnaeryeo.repository.NoticeRepository;
 import io.bit.busnaeryeo.service.NoticeServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class NoticeController {
     //공지 등록
     @PostMapping("/admin")
     public ResponseEntity<?> postNotice(@RequestBody NoticeDTO noticeDTO) {
-
+        noticeDTO.setWriter("관리자");
         Notice persistNotice = (noticeService.save(noticeDTO));
         NoticeDTO saveNotice = persistNotice.ToDTO();
         return new ResponseEntity<>(saveNotice, HttpStatus.CREATED);

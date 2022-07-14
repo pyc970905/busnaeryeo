@@ -1,4 +1,4 @@
-package io.bit.busnaeryeo.domain.etity;
+package io.bit.busnaeryeo.domain.entity;
 
 import io.bit.busnaeryeo.domain.dto.NoticeDTO;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class Notice extends Time{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +21,13 @@ public class Notice {
 
     @Column
     private String title;
-
+    @Column
+    private  String writer;
     @Column
     private String content;
 
-    @ManyToOne
-    private User user;
+
+
 
 
 
@@ -39,7 +40,7 @@ public class Notice {
                 .id(id)
                 .title(title)
                 .content(content)
-                .user(user)
+                .writer(writer)
                 .build();
 
         return noticeDTO;

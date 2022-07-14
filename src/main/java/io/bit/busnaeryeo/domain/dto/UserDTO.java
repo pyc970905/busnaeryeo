@@ -1,6 +1,6 @@
 package io.bit.busnaeryeo.domain.dto;
 
-import io.bit.busnaeryeo.domain.etity.User;
+import io.bit.busnaeryeo.domain.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
