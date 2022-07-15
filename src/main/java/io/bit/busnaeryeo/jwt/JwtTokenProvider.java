@@ -84,7 +84,7 @@ public class JwtTokenProvider {
             return request.getHeader("Authorization").substring(7);
         return null;
     }
-    // Request의 Header에서 RefreshToken 값을 가져옵니다. "authorization" : "token'
+    // Request의 Header에서 RefreshToken 값을 가져옵니다. "RefreshToken" : "token'
     public String resolveRefreshToken(HttpServletRequest request) {
         if(request.getHeader("refreshToken") != null )
             return request.getHeader("refreshToken").substring(7);
@@ -96,6 +96,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
+
         } catch (ExpiredJwtException e) {
             log.error(e.getMessage());
             return false;

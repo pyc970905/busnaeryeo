@@ -4,6 +4,9 @@ import io.bit.busnaeryeo.domain.dto.NoticeDTO;
 import io.bit.busnaeryeo.domain.entity.Notice;
 import io.bit.busnaeryeo.repository.NoticeRepository;
 import io.bit.busnaeryeo.service.NoticeServiceImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 
 @RestController
@@ -25,7 +30,7 @@ import javax.swing.*;
 @RequestMapping("/api/notice")
 @Log4j2
 public class NoticeController {
-
+    private String secretKey = "lalala";
     private final NoticeServiceImpl noticeService;
     private final NoticeRepository noticeRepository;
 
@@ -41,8 +46,13 @@ public class NoticeController {
 
     //공지 등록
     @PostMapping(value = "/admin")
-    public ResponseEntity<?> postNotice(@RequestBody NoticeDTO noticeDTO) {
-        noticeDTO.setWriter("관리자");
+    public ResponseEntity<?> postNotice(HttpServletRequest request, @RequestBody NoticeDTO noticeDTO) {
+
+        String token = request.getParameter("authorization").substring(7);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        String username = claims.getBody().getSubject();
+        noticeDTO.setWriter(username);
+
         Notice persistNotice = (noticeService.save(noticeDTO));
         NoticeDTO saveNotice = persistNotice.ToDTO();
         return new ResponseEntity<>(saveNotice, HttpStatus.CREATED);
