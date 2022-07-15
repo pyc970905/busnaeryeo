@@ -20,7 +20,6 @@ public class NoticeDTO {
 
     private String createdDate;
 
-    private String modifiedDate;
 
 
     public Notice ToEntity() {
@@ -30,6 +29,7 @@ public class NoticeDTO {
                  .title(title)
                  .content(content)
                  .writer(writer)
+
                  .build();
 
         return notice;

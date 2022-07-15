@@ -58,9 +58,8 @@ public class NoticeController {
         NoticeDTO modifyNotice = persistNotice.ToDTO();
 
         modifyNotice.setContent(noticeDTO.getContent());
-
         modifyNotice.setTitle(noticeDTO.getTitle());
-        modifyNotice.setCreatedDate(noticeDTO.getCreatedDate());
+
 
         NoticeDTO saveNotice = noticeService.save(modifyNotice).ToDTO();
 

@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Time {
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private String createdDate;
 
