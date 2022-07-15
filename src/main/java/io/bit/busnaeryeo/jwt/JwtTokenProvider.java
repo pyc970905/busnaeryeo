@@ -44,12 +44,12 @@ public class JwtTokenProvider {
     }
 
     // Access Token 생성.
-    public String createAccessToken(String email, List<String> roles){
-        return this.createToken(email, roles, accessTokenValidTime);
+    public String createAccessToken(String username, List<String> roles){
+        return this.createToken(username, roles, accessTokenValidTime);
     }
     // Refresh Token 생성.
-    public String createRefreshToken(String email, List<String> roles) {
-        return this.createToken(email, roles, refreshTokenValidTime);
+    public String createRefreshToken(String username, List<String> roles) {
+        return this.createToken(username, roles, refreshTokenValidTime);
     }
 
     // Create token
@@ -69,12 +69,12 @@ public class JwtTokenProvider {
 
     // JWT 에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getUserEmail(token));
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
-    public String getUserEmail(String token) {
+    public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -105,7 +105,7 @@ public class JwtTokenProvider {
 
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("authorization", "Bearer "+ accessToken);
+        response.setHeader("Authorization", "Bearer "+ accessToken);
     }
 
     // 리프레시 토큰 헤더 설정

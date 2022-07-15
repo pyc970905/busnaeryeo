@@ -38,11 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(refreshToken);
                 if (validateRefreshToken && isRefreshToken) {
                     /// 리프레시 토큰으로 이메일 정보 가져오기
-                    String email = jwtTokenProvider.getUserEmail(refreshToken);
+                    String username = jwtTokenProvider.getUsername(refreshToken);
                     /// 이메일로 권한정보 받아오기
-                    List<String> roles = jwtTokenProvider.getRoles(email);
+                    List<String> roles = jwtTokenProvider.getRoles(username);
                     /// 토큰 발급
-                    String newAccessToken = jwtTokenProvider.createAccessToken(email, roles);
+                    String newAccessToken = jwtTokenProvider.createAccessToken(username, roles);
                     /// 헤더에 어세스 토큰 추가
                     jwtTokenProvider.setHeaderAccessToken(response, newAccessToken);
                     /// 컨텍스트에 넣기

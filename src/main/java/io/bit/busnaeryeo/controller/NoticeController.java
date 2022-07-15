@@ -46,13 +46,14 @@ public class NoticeController {
 
     //공지 등록
     @PostMapping(value = "/admin")
-    public ResponseEntity<?> postNotice(HttpServletRequest request, @RequestBody NoticeDTO noticeDTO) {
+    public ResponseEntity<?> postNotice(HttpServletRequest request,@RequestBody NoticeDTO noticeDTO) {
+        noticeDTO.setWriter("관리자");
 
-        String token = request.getParameter("authorization").substring(7);
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        log.info(request.getHeader("Authorization").substring(7));
+        String jwtToken = request.getHeader("Authorization");
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
         String username = claims.getBody().getSubject();
-        noticeDTO.setWriter(username);
-
+        log.info(username);
         Notice persistNotice = (noticeService.save(noticeDTO));
         NoticeDTO saveNotice = persistNotice.ToDTO();
         return new ResponseEntity<>(saveNotice, HttpStatus.CREATED);
