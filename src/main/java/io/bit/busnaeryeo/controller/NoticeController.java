@@ -18,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/notice")
@@ -28,7 +30,7 @@ public class NoticeController {
     private final NoticeRepository noticeRepository;
 
     //공지 보기
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value ="/admin" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getNotices(@PageableDefault Pageable pageable, PagedResourcesAssembler<Notice> assembler) {
         Page<Notice> notices = noticeService.findAll(pageable);
         PagedModel<EntityModel<Notice>> model = assembler.toModel(notices);
@@ -36,8 +38,9 @@ public class NoticeController {
     }
 
 
+
     //공지 등록
-    @PostMapping("/admin")
+    @PostMapping(value = "/admin")
     public ResponseEntity<?> postNotice(@RequestBody NoticeDTO noticeDTO) {
         noticeDTO.setWriter("관리자");
         Notice persistNotice = (noticeService.save(noticeDTO));
@@ -48,14 +51,19 @@ public class NoticeController {
     //공지 수정
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> putNotice(@PathVariable("id") Long id, @RequestBody NoticeDTO noticeDTO) {
+
+
         Notice persistNotice = noticeService.findNoticeById(id);
-        log.info(persistNotice);
+
         NoticeDTO modifyNotice = persistNotice.ToDTO();
-        log.info(modifyNotice);
+
         modifyNotice.setContent(noticeDTO.getContent());
+
         modifyNotice.setTitle(noticeDTO.getTitle());
+        modifyNotice.setCreatedDate(noticeDTO.getCreatedDate());
+
         NoticeDTO saveNotice = noticeService.save(modifyNotice).ToDTO();
-        log.info(saveNotice);
+
         return new ResponseEntity<>(saveNotice, HttpStatus.OK);
     }
 
