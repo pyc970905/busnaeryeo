@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
+import java.util.Base64;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,13 +48,15 @@ public class NoticeController {
     //공지 등록
     @PostMapping(value = "/admin")
     public ResponseEntity<?> postNotice(HttpServletRequest request,@RequestBody NoticeDTO noticeDTO) {
-        noticeDTO.setWriter("관리자");
 
-        log.info(request.getHeader("Authorization").substring(7));
-        String jwtToken = request.getHeader("Authorization");
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+
+        // jwt 토큰에서 username을 가져와서 작성자를 따로 입력하지 않아도 값이 들어가도록 함
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes())).parseClaimsJws(jwtToken);
+        // 이줄을 고쳐야함 오류가 걸렸던 이유 signkey에 직접적으로 String을 값을 넣어줬는데 역파싱 하기 위해서는 secretkry를 byte로 파싱해준뒤 역파싱해야함.
         String username = claims.getBody().getSubject();
-        log.info(username);
+
+        noticeDTO.setWriter(username);
         Notice persistNotice = (noticeService.save(noticeDTO));
         NoticeDTO saveNotice = persistNotice.ToDTO();
         return new ResponseEntity<>(saveNotice, HttpStatus.CREATED);
