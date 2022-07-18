@@ -33,7 +33,7 @@ import java.util.Base64;
 @Log4j2
 public class NoticeController {
     @Value("${jwt.secretkey}")
-    private final String secretKey;
+    private String secretKey;
     private final NoticeServiceImpl noticeService;
 
 
