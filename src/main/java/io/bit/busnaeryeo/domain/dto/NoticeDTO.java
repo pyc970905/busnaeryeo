@@ -18,7 +18,7 @@ public class NoticeDTO {
 
     private String writer;
 
-    private String createdDate;
+
 
 
 

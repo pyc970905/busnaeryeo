@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 
     @Value("${jwt.response.header}")
@@ -15,16 +17,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedHeaders("**")
-                .allowedOrigins("http://localhost:3000","http://43.200.113.84:6379")
+                .allowedHeaders("*")
+                .allowedOrigins("http://192.168.1.45:3000","http://43.200.113.84:6379")
                 .exposedHeaders(jwtHeader)
-                .allowedMethods(
-                        HttpMethod.GET.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.OPTIONS.name()
-                )
+                .allowedMethods("*")
                 .allowCredentials(true);
     }
 }

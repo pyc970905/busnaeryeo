@@ -32,10 +32,10 @@ import java.util.Base64;
 @RequestMapping("/api/notice")
 @Log4j2
 public class NoticeController {
-
-    private String secretKey = "lalala";
+    @Value("${jwt.secretkey}")
+    private final String secretKey;
     private final NoticeServiceImpl noticeService;
-    private final NoticeRepository noticeRepository;
+
 
     //공지 보기
     @GetMapping(value ="/admin" ,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,7 +66,7 @@ public class NoticeController {
     }
 
     //공지 수정
-    @PutMapping("/admin/{id}")
+    @PatchMapping("/admin/{id}")
     public ResponseEntity<?> putNotice(HttpServletRequest request, @PathVariable("id") Long id, @RequestBody NoticeDTO noticeDTO) {
 
 

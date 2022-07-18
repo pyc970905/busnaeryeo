@@ -36,7 +36,6 @@ public class Notice extends Time{
                 .title(title)
                 .content(content)
                 .writer(writer)
-                .createdDate(super.getCreatedDate())
                 .build();
 
         return noticeDTO;

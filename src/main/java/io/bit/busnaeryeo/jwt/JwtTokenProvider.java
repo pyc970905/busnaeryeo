@@ -6,6 +6,7 @@ import io.bit.busnaeryeo.service.RedisServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,10 +25,11 @@ import java.util.List;
 public class JwtTokenProvider {
 
     // 키
-    private String secretKey = "lalala";
+    @Value("${jwt.secretkey}")
+    private String secretKey;
 
     // 어세스 토큰 유효시간 | 30m
-    private long accessTokenValidTime = 30 * 60 * 1000L; // 30 * 60 * 1000L;
+    private long accessTokenValidTime = 3 * 60 * 1000L; // 30 * 60 * 1000L;
     // 리프레시 토큰 유효시간 | 24h
     private long refreshTokenValidTime = 24 * 60 * 60 * 1000L;
 
