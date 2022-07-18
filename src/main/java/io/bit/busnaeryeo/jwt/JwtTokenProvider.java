@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     // 키
     @Value("${jwt.secretkey}")
-    private String secretKey;
+    private String secretKey; //final로 통한 의존성 주입이 가능한가???? 의문점
 
     // 어세스 토큰 유효시간 | 30m
     private long accessTokenValidTime = 3 * 60 * 1000L; // 30 * 60 * 1000L;

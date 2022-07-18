@@ -22,6 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+//    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+//        this.jwtTokenProvider = jwtTokenProvider;
+//    }
 
     // AuthenticationManager를 Bean으로 등록합니다.
     @Bean

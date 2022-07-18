@@ -4,6 +4,8 @@ import io.bit.busnaeryeo.domain.dto.LoginDTO;
 import io.bit.busnaeryeo.domain.entity.User;
 import io.bit.busnaeryeo.domain.dto.UserDTO;
 import io.bit.busnaeryeo.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;

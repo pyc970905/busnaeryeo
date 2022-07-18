@@ -36,6 +36,10 @@ public class NoticeController {
     private String secretKey;
     private final NoticeServiceImpl noticeService;
 
+//    public NoticeController(NoticeServiceImpl noticeService){
+//        this.noticeService = noticeService;
+//    }
+
 
     //공지 보기
     @GetMapping(value ="/admin" ,produces = MediaType.APPLICATION_JSON_VALUE)

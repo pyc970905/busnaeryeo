@@ -22,6 +22,12 @@ public class UserController {
     private final UserServiceImpl userService;
     private final RedisServiceImpl redisService;
     ////private final TokenRepository tokenRepository;
+//    @Au
+//    public UserController(JwtTokenProvider jwtTokenProvider, UserServiceImpl userService, RedisServiceImpl redisService){
+//        this.jwtTokenProvider = jwtTokenProvider;
+//        this.userService = userService;
+//        this.redisService = redisService;
+//    }
 
     // 회원가입
     @PostMapping("/join")
