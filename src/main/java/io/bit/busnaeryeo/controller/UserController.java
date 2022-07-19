@@ -30,7 +30,7 @@ public class UserController {
 //    }
 
     // 회원가입
-    @PostMapping("/join")
+    @PostMapping("/signUp")
     public ResponseEntity join(@RequestBody @Valid UserDTO userDTO) {
         Long result = userService.join(userDTO);
         return result != null ?
@@ -38,9 +38,17 @@ public class UserController {
                 ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/join/admin")
+    @PostMapping("/signUp/admin")
     public ResponseEntity joinAdmin(@RequestBody @Valid UserDTO userDTO) {
         Long result = userService.joinAdmin(userDTO);
+        return result != null ?
+                ResponseEntity.ok().body("회원가입을 축하합니다!") :
+                ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/signUp/driver")
+    public ResponseEntity joinDriver(@RequestBody @Valid UserDTO userDTO) {
+        Long result = userService.joinDriver(userDTO);
         return result != null ?
                 ResponseEntity.ok().body("회원가입을 축하합니다!") :
                 ResponseEntity.badRequest().build();

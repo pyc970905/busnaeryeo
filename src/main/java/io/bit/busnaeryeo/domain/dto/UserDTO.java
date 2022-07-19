@@ -3,6 +3,8 @@ package io.bit.busnaeryeo.domain.dto;
 import io.bit.busnaeryeo.domain.entity.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
@@ -10,7 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class UserDTO {
 
@@ -39,6 +42,20 @@ public class UserDTO {
                 .address(address)
                 .birthDay(birthDay)
                 .roles(Collections.singletonList("ROLE_USER"))
+                .build();
+        return user;
+    }
+
+    public User toDriverEntity() {
+        User user = User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .realName(realName)
+                .gender(gender)
+                .address(address)
+                .birthDay(birthDay)
+                .roles(Collections.singletonList("ROLE_DRIVER"))
                 .build();
         return user;
     }

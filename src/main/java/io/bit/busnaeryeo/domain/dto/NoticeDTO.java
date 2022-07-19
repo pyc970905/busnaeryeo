@@ -4,11 +4,14 @@ import io.bit.busnaeryeo.domain.entity.Notice;
 import io.bit.busnaeryeo.domain.entity.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class NoticeDTO {
 
@@ -17,8 +20,6 @@ public class NoticeDTO {
     private String content;
 
     private String writer;
-
-
 
 
 

@@ -34,6 +34,14 @@ public class UserServiceImpl implements UserService {
         return userId;
 
     }
+    public Long joinDriver(UserDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        Long userId = userRepository.save(userDTO.toDriverEntity()).getId();
+
+        return userId;
+
+    }
+
 
     public User findUser(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername())
