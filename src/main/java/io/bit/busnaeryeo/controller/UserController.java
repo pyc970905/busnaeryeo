@@ -72,14 +72,14 @@ public class UserController {
         // 리프레시 토큰 저장소에 저장
         ////tokenRepository.save(new RefreshToken(refreshToken));
 
-        return ResponseEntity.ok().body("로그인 성공!");
+        return ResponseEntity.ok().body("Login!");
     }
 
     // 로그아웃
     @GetMapping("/api/logout")
     public ResponseEntity logout(HttpServletRequest request) {
         redisService.delValues(request.getHeader("refreshToken"));
-        return ResponseEntity.ok().body("로그아웃 성공!");
+        return ResponseEntity.ok().body("Logout!");
     }
 
     // JWT 인증 요청 테스트
