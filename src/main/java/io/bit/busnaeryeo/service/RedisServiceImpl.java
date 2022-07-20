@@ -14,20 +14,20 @@ public class RedisServiceImpl implements RedisService {
     private final RedisTemplate redisTemplate;
 
     // 키-벨류 설정
-    public void setValues(String token, String username){
+    public void setValues(String username, String token){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
 //        values.set(name, age);
-        values.set(token, username, Duration.ofMinutes(30));  // 30분 뒤 메모리에서 삭제된다.
+        values.set(username, token, Duration.ofMinutes(30));  // 30분 뒤 메모리에서 삭제된다.
     }
 
     // 키값으로 벨류 가져오기
-    public String getValues(String token){
+    public String getValues(String username){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
-        return values.get(token);
+        return values.get(username);
     }
 
     // 키-벨류 삭제
-    public void delValues(String token) {
-        redisTemplate.delete(token.substring(7));
+    public void delValues(String username) {
+        redisTemplate.delete(username);
     }
 }

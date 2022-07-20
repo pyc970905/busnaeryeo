@@ -66,7 +66,7 @@ public class UserController {
         String accessToken = jwtTokenProvider.createAccessToken(user.getUsername(), user.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUsername(), user.getRoles());
         jwtTokenProvider.setHeaderAccessToken(response, accessToken);
-//        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
 
         // Redis 인메모리에 리프레시 토큰 저장
         redisService.setValues(user.getUsername(), refreshToken);
@@ -79,7 +79,7 @@ public class UserController {
     // 로그아웃
     @GetMapping("/api/logout")
     public ResponseEntity logout(HttpServletRequest request) {
-        redisService.delValues(request.getHeader("refreshToken"));
+        redisService.delValues(jwtTokenProvider.getUsername(jwtTokenProvider.resolveRefreshToken(request)));
         return ResponseEntity.ok().body("Logout!");
     }
 

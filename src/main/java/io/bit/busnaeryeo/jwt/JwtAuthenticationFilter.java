@@ -32,10 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 어세스 토큰이 만료된 상황 | 리프레시 토큰 또한 존재하는 상황
             else if (!jwtTokenProvider.validateToken(accessToken) && refreshToken != null) {
                 // 재발급 후, 컨텍스트에 다시 넣기
+
                 /// 리프레시 토큰 검증
                 boolean validateRefreshToken = jwtTokenProvider.validateToken(refreshToken);
                 /// 리프레시 토큰 저장소 존재유무 확인
-                boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(refreshToken);
+                boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(jwtTokenProvider.getUsername(refreshToken));
                 if (validateRefreshToken && isRefreshToken) {
                     /// 리프레시 토큰으로 이메일 정보 가져오기
                     String username = jwtTokenProvider.getUsername(refreshToken);

@@ -77,6 +77,7 @@ public class JwtTokenProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUsername(String token) {
+        System.out.println(token);
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -110,14 +111,14 @@ public class JwtTokenProvider {
         response.setHeader("Authorization", "Bearer "+ accessToken);
     }
 
-    // 리프레시 토큰 헤더 설정  ,,,추가로 삭제 예정
-//    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-//        response.setHeader("refreshToken", "Bearer "+ refreshToken);
-//    }
+//     리프레시 토큰 헤더 설정  ,,,추가로 삭제 예정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+        response.setHeader("refreshToken", "Bearer "+ refreshToken);
+    }
 
     // RefreshToken 존재유무 확인
-    public boolean existsRefreshToken(String refreshToken) {
-        return redisService.getValues(refreshToken) != null;
+    public boolean existsRefreshToken(String username) {
+        return redisService.getValues(username) != null;
         //// return tokenRepository.existsByRefreshToken(refreshToken);
     }
 
