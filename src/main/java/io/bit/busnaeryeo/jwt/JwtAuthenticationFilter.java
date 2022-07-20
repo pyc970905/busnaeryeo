@@ -35,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 /// 리프레시 토큰 검증
                 boolean validateRefreshToken = jwtTokenProvider.validateToken(refreshToken);
+
                 /// 리프레시 토큰 저장소 존재유무 확인
                 boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(jwtTokenProvider.getUsername(refreshToken));
                 if (validateRefreshToken && isRefreshToken) {

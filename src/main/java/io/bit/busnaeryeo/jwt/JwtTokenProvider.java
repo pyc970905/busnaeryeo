@@ -29,7 +29,7 @@ public class JwtTokenProvider {
     private String secretKey; //final로 통한 의존성 주입이 가능한가???? 의문점
 
     // 어세스 토큰 유효시간 | 30m
-    private long accessTokenValidTime = 3 * 60 * 1000L; // 30 * 60 * 1000L;
+    private long accessTokenValidTime = 1 * 60 * 1000L; // 30 * 60 * 1000L;
     // 리프레시 토큰 유효시간 | 24h
     private long refreshTokenValidTime = 24 * 60 * 60 * 1000L;
 
@@ -77,7 +77,7 @@ public class JwtTokenProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUsername(String token) {
-        System.out.println(token);
+
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 

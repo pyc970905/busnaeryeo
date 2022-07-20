@@ -21,6 +21,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedOriginPatterns("http://192.168.0.59:3000","http://43.200.113.84:6379")
                 .exposedHeaders(jwtHeader)
+                .exposedHeaders("refreshToken")
                 .allowedMethods("*")
                 .allowCredentials(true);
     }
