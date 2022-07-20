@@ -1,5 +1,7 @@
 package io.bit.busnaeryeo.config;
 
+import io.bit.busnaeryeo.jwt.JwtAccessDeniedHandler;
+import io.bit.busnaeryeo.jwt.JwtAuthenticationEntryPoint;
 import io.bit.busnaeryeo.jwt.JwtAuthenticationFilter;
 import io.bit.busnaeryeo.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 //    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
 //        this.jwtTokenProvider = jwtTokenProvider;
 //    }
 
     // AuthenticationManager를 Bean으로 등록합니다.
-    @Bean
+
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -51,11 +55,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors()
-//                .configurationSource(configurationSource())
+
                 .and()
                 .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) ///엔트리포인트 공부
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                .and()
                 .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 X
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 X
+
                 .and()
                 .authorizeRequests()
                 .antMatchers("/","/join", "/login", "/join/admin").permitAll()
@@ -63,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/driver/**").hasRole("DRIVER")
                 .anyRequest().authenticated()
+
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다

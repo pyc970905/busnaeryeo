@@ -44,24 +44,8 @@ public class RedisConfig {
         return lettuceConnectionFactory;
     }
 
-
-////아래꺼를 참고해서 위에 보안해서 고침
-//    @Bean
-//    JedisConnectionFactory jedisConnectionFactory(){
-//
-//        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisHost,redisPort);
-//        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
-//
-//        JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfigurationBuilder = JedisClientConfiguration.builder();
-//        jedisClientConfigurationBuilder.connectTimeout(Duration.ofSeconds(3600));
-//
-//        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfigurationBuilder.build());
-//
-//        return  jedisConnectionFactory;
-//    }
-
     @Bean
-    public RedisTemplate<?, ?> redisTemplate() {
+    public RedisTemplate<?,?> redisTemplate() {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         // 아래 두 라인을 작성하지 않으면, key값이 \xac\xed\x00\x05t\x00\x03sol 이렇게 조회된다.
         redisTemplate.setKeySerializer(new StringRedisSerializer());
