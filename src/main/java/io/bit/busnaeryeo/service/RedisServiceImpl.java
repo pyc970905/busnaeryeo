@@ -6,12 +6,13 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService {
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     // 키-벨류 설정
     public void setValues(String username, String token){
@@ -29,5 +30,10 @@ public class RedisServiceImpl implements RedisService {
     // 키-벨류 삭제
     public void delValues(String username) {
         redisTemplate.delete(username);
+    }
+
+    public void setValuesWithExp(String name, String token, Long time){
+
+        redisTemplate.opsForValue().set(name,token,time, TimeUnit.MILLISECONDS);
     }
 }

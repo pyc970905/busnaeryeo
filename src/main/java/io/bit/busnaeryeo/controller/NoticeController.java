@@ -2,7 +2,7 @@ package io.bit.busnaeryeo.controller;
 
 import io.bit.busnaeryeo.domain.dto.NoticeDTO;
 import io.bit.busnaeryeo.domain.entity.Notice;
-import io.bit.busnaeryeo.repository.NoticeRepository;
+import io.bit.busnaeryeo.jwt.JwtTokenProvider;
 import io.bit.busnaeryeo.service.NoticeServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -22,9 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletRequest;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
 import java.util.Base64;
 
 @RestController
@@ -35,10 +34,9 @@ public class NoticeController {
     @Value("${jwt.secretkey}")
     private String secretKey;
     private final NoticeServiceImpl noticeService;
+    private JwtTokenProvider jwtTokenProvider;
 
-//    public NoticeController(NoticeServiceImpl noticeService){
-//        this.noticeService = noticeService;
-//    }
+
 
 
     //공지 보기
@@ -57,13 +55,12 @@ public class NoticeController {
 
 
         // jwt 토큰에서 username을 가져와서 작성자를 따로 입력하지 않아도 값이 들어가도록 함
-        String jwtToken = request.getHeader("Authorization").substring(7);
-        Jws<Claims> claims = Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes())).parseClaimsJws(jwtToken);
+        String accessToken= jwtTokenProvider.resolveAccessToken(request);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes())).parseClaimsJws(accessToken);
         // 이줄을 고쳐야함 오류가 걸렸던 이유 signkey에 직접적으로 String을 값을 넣어줬는데 역파싱 하기 위해서는 secretkry를 byte로 파싱해준뒤 역파싱해야함.
         String username = claims.getBody().getSubject();
 
         noticeDTO.setWriter(username);
-
         Notice persistNotice = (noticeService.save(noticeDTO));
         NoticeDTO saveNotice = persistNotice.ToDTO();
         return new ResponseEntity<>(saveNotice, HttpStatus.CREATED);

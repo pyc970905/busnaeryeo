@@ -29,12 +29,10 @@ public class JwtTokenProvider {
     private String secretKey; //final로 통한 의존성 주입이 가능한가???? 의문점
 
     // 어세스 토큰 유효시간 | 30m
-    private long accessTokenValidTime = 1 * 60 * 1000L; // 30 * 60 * 1000L;
+    private long accessTokenValidTime = 30 * 60 * 1000L; // 30 * 60 * 1000L;
     // 리프레시 토큰 유효시간 | 24h
     private long refreshTokenValidTime = 24 * 60 * 60 * 1000L;
-
     private final CustomUserDetailService customUserDetailService;
-    //// private final TokenRepository tokenRepository;
     private final RedisServiceImpl redisService;
     private final UserRepository userRepository;
 
@@ -81,6 +79,13 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public Long getExpireTime(String token) {
+        Date expriation = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expriation.getTime() -now);
+    }
+
+
     // Request의 Header에서 AccessToken 값을 가져옵니다. "authorization" : "token'
     public String resolveAccessToken(HttpServletRequest request) {
         if(request.getHeader("Authorization") != null )
@@ -100,11 +105,18 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
 
-        } catch (ExpiredJwtException e) {
-            log.error(e.getMessage());
+        } catch (ExpiredJwtException | SecurityException e) {
+            log.error("Expried JWT Token : ",e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("Malformed JWT Token : ", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT Token", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims String is empty.  ", e.getMessage());
+        }
             return false;
         }
-    }
+
 
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {

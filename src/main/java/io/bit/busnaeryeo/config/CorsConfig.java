@@ -12,16 +12,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 
-    @Value("${jwt.response.header}")
-    private String jwtHeader;
+    @Value("${jwt.response.header.acc}")
+    private String jwtHeaderAcc;
 
+    @Value("${jwt.response.header.ref}")
+    private String jwtHeaderRef;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedHeaders("*")
-                .allowedOriginPatterns("http://192.168.0.59:3000","http://43.200.113.84:6379")
-                .exposedHeaders(jwtHeader)
-                .exposedHeaders("refreshToken")
+                .allowedOriginPatterns("http://localhost:3000","http://43.200.113.84:6379")
+                .exposedHeaders(jwtHeaderAcc)
+                .exposedHeaders(jwtHeaderRef)
                 .allowedMethods("*")
                 .allowCredentials(true);
     }

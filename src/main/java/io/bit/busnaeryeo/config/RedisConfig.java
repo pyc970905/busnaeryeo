@@ -49,7 +49,7 @@ public class RedisConfig {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         // 아래 두 라인을 작성하지 않으면, key값이 \xac\xed\x00\x05t\x00\x03sol 이렇게 조회된다.
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        redisTemplate.setValueSerializer(new StringRedisSerializer()); //new Jackson2JsonRedisSerializer<>(Object.class) = > new StringRedisSerializer() 이걸로 변경함
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
         redisTemplate.setConnectionFactory(redisConnectionFactory());

@@ -1,8 +1,16 @@
 package io.bit.busnaeryeo.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.netty.util.internal.ObjectUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -10,23 +18,30 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Log4j2
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final RedisTemplate redisTemplate;
+    @Value("${jwt.secretkey}")
+    private String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 헤더에서 JWT 를 받아옵니다.
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
-        // 유효한 토큰인지 확인합니다.
+        // 유효한 토큰이 있는지 확인
         if (accessToken != null) {
+            String aa = jwtTokenProvider.getUsername(accessToken);
+            String name = aa + "isLogout";
+            String isLogout = (String) redisTemplate.opsForValue().get(name);
             // 어세스 토큰이 유효한 상황
-            if (jwtTokenProvider.validateToken(accessToken)) {
+            if (jwtTokenProvider.validateToken(accessToken) && ObjectUtils.isEmpty(isLogout)) {
                 this.setAuthentication(accessToken);
             }
             // 어세스 토큰이 만료된 상황 | 리프레시 토큰 또한 존재하는 상황
@@ -38,6 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 /// 리프레시 토큰 저장소 존재유무 확인
                 boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(jwtTokenProvider.getUsername(refreshToken));
+
                 if (validateRefreshToken && isRefreshToken) {
                     /// 리프레시 토큰으로 이메일 정보 가져오기
                     String username = jwtTokenProvider.getUsername(refreshToken);

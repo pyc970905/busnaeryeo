@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Builder
 public class User implements UserDetails {
 

@@ -1,6 +1,7 @@
 package io.bit.busnaeryeo.controller;
 
 import io.bit.busnaeryeo.domain.dto.LoginDTO;
+import io.bit.busnaeryeo.domain.dto.SignUpDTO;
 import io.bit.busnaeryeo.domain.entity.User;
 import io.bit.busnaeryeo.domain.dto.UserDTO;
 import io.bit.busnaeryeo.jwt.JwtTokenProvider;
@@ -31,25 +32,25 @@ public class UserController {
 //    }
 
     // 회원가입
-    @PostMapping("/signUp")
-    public ResponseEntity join(@RequestBody @Valid UserDTO userDTO) {
-        Long result = userService.join(userDTO);
+    @PostMapping("/join")
+    public ResponseEntity join(@RequestBody @Valid SignUpDTO signUpDTO) {
+        Long result = userService.join(signUpDTO);
         return result != null ?
                 ResponseEntity.ok().body("회원가입을 축하합니다!") :
                 ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/signUp/admin")
-    public ResponseEntity joinAdmin(@RequestBody @Valid UserDTO userDTO) {
-        Long result = userService.joinAdmin(userDTO);
+    @PostMapping("/join/admin")
+    public ResponseEntity joinAdmin(@RequestBody @Valid SignUpDTO signUpDTO) {
+        Long result = userService.joinAdmin(signUpDTO);
         return result != null ?
                 ResponseEntity.ok().body("회원가입을 축하합니다!") :
                 ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/signUp/driver")
-    public ResponseEntity joinDriver(@RequestBody @Valid UserDTO userDTO) {
-        Long result = userService.joinDriver(userDTO);
+    @PostMapping("/join/driver")
+    public ResponseEntity joinDriver(@RequestBody @Valid SignUpDTO signUpDTO) {
+        Long result = userService.joinDriver(signUpDTO);
         return result != null ?
                 ResponseEntity.ok().body("회원가입을 축하합니다!") :
                 ResponseEntity.badRequest().build();
@@ -79,14 +80,8 @@ public class UserController {
     // 로그아웃
     @GetMapping("/api/logout")
     public ResponseEntity logout(HttpServletRequest request) {
-        redisService.delValues(jwtTokenProvider.getUsername(jwtTokenProvider.resolveRefreshToken(request)));
-        return ResponseEntity.ok().body("Logout!");
-    }
 
-    // JWT 인증 요청 테스트
-    @GetMapping("/test")
-    public String test(HttpServletRequest request) {
-        return "Hello, User?";
+        return userService.logout(request);
     }
 
 }
