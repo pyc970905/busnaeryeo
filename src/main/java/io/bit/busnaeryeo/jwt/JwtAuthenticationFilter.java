@@ -31,20 +31,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 헤더에서 JWT 를 받아옵니다.
+        // 헤더에서 jwt토큰 받아오기
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
-        // 유효한 토큰이 있는지 확인
+        // 유효한 토큰이 있는지 확인하고 레디스 서버에서 해당 토큰안에 있는 이메일이 로그아웃해서 생긴 토큰의 밸류값을 불러옴
         if (accessToken != null) {
             String aa = jwtTokenProvider.getUsername(accessToken);
             String name = aa + "isLogout";
             String isLogout = (String) redisTemplate.opsForValue().get(name);
-            // 어세스 토큰이 유효한 상황
-            if (jwtTokenProvider.validateToken(accessToken) && ObjectUtils.isEmpty(isLogout)) {
+            // 어세스 토큰이 유효하고 해당 이메일의 로그아웃한 토큰이 같지 않다면
+            if (jwtTokenProvider.validateToken(accessToken) && (accessToken != isLogout)) {
                 this.setAuthentication(accessToken);
             }
-            // 어세스 토큰이 만료된 상황 | 리프레시 토큰 또한 존재하는 상황
+            //어세스토큰이 유효한데 로그아웃한 토큰과 값이 같다면?? 토큰 탈취의 위험으로 어세스토큰을 헤더에서 지워서 로그인 못하게만든다.
+            else if (jwtTokenProvider.validateToken(accessToken) && (accessToken == isLogout)) {
+                this.setAuthentication(null);
+
+            }
+            // 어세스 토큰이 만료된 상황 | 리프레시 토큰 또한 존재하는 상황 이거에서 아래껄로 고침
+            // 어세스 토큰이 만료됐는데 리프레쉬 토큰이 있는 경우
             else if (!jwtTokenProvider.validateToken(accessToken) && refreshToken != null) {
                 // 재발급 후, 컨텍스트에 다시 넣기
 
