@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 build/
+**/src/main/resources/application.properties
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -37,5 +38,4 @@ out/
 .vscode/
 
 
-https://github.com/pyc970905/busnaeryeo/blob/79103116b0deecee73484932257acb22e54d3bd6/src/main/resources/application.properties
-C:\Users\BIT\Desktop\busnaeryeo\src\main\resources\application.properties
+
