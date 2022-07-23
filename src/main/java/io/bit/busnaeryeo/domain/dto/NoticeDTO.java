@@ -21,16 +21,16 @@ public class NoticeDTO {
 
     private String writer;
 
+    private User user;
 
-
-    public Notice ToEntity() {
+    public Notice toEntity() {
 
          Notice notice = Notice.builder()
                  .id(id)
                  .title(title)
                  .content(content)
                  .writer(writer)
-
+                 .user(user)
                  .build();
 
         return notice;

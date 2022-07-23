@@ -27,15 +27,20 @@ public class Notice extends Time{
     private String content;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
-    public NoticeDTO ToDTO() {
+
+    public NoticeDTO toDTO() {
 
         NoticeDTO noticeDTO = NoticeDTO.builder()
                 .id(id)
                 .title(title)
                 .content(content)
                 .writer(writer)
+                .user(user)
                 .build();
 
         return noticeDTO;

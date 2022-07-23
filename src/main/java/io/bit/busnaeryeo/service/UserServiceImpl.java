@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -97,6 +98,25 @@ public class UserServiceImpl implements UserService {
 
         }
         return ResponseEntity.ok().body("Logout Complete.");
+
+    }
+    @Transactional
+    public ResponseEntity<?> login(LoginDTO loginDTO, HttpServletResponse response) {
+        // 유저 존재 확인
+        User user = findUser(loginDTO);
+        // 비밀번호 체크
+        checkPassword(user, loginDTO);
+        // 어세스, 리프레시 토큰 발급 및 헤더 설정
+        String accessToken = jwtTokenProvider.createAccessToken(user.getUsername(), user.getRoles());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getUsername(), user.getRoles());
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+
+        // Redis 인메모리에 리프레시 토큰 저장
+        redisService.setValues(user.getUsername(), refreshToken);
+        // 리프레시 토큰 저장소에 저장
+        ////tokenRepository.save(new RefreshToken(refreshToken));
+        return ResponseEntity.ok().body("Login!");
 
     }
 }
