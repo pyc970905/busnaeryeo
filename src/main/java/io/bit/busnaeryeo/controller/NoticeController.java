@@ -31,12 +31,7 @@ import java.util.Base64;
 @RequestMapping("/api/notice")
 @Log4j2
 public class NoticeController {
-    @Value("${jwt.secretkey}")
-    private String secretKey;
     private final NoticeServiceImpl noticeService;
-    private JwtTokenProvider jwtTokenProvider;
-
-
 
 
     //공지 보기
@@ -63,7 +58,7 @@ public class NoticeController {
 
         return noticeService.checkAuth(request, modifyNotice) ?
                 ResponseEntity.ok().body(noticeService.save(modifyNotice, request).toDTO()) :
-                ResponseEntity.badRequest().body("본인이 작성한 글이 아닙니다.");
+                ResponseEntity.badRequest().body("Not your Article, Please Check This Article's Writer");
     }
 
     //공지 삭제
@@ -72,7 +67,7 @@ public class NoticeController {
 
         return noticeService.checkAuthById(request, id) ?
                 ResponseEntity.ok().body(noticeService.deleteById(id)) :
-                ResponseEntity.badRequest().body("본인이 작성한 글이 아닙니다.");
+                ResponseEntity.badRequest().body("Not your Article, Please Check This Article's Writer");
     }
 
 

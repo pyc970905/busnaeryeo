@@ -20,23 +20,16 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserServiceImpl userService;
-    private final RedisServiceImpl redisService;
-    ////private final TokenRepository tokenRepository;
-//    @Au
-//    public UserController(JwtTokenProvider jwtTokenProvider, UserServiceImpl userService, RedisServiceImpl redisService){
-//        this.jwtTokenProvider = jwtTokenProvider;
-//        this.userService = userService;
-//        this.redisService = redisService;
-//    }
+
+
 
     // 회원가입
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody @Valid SignUpDTO signUpDTO) {
         Long result = userService.join(signUpDTO);
         return result != null ?
-                ResponseEntity.ok().body("회원가입을 축하합니다!") :
+                ResponseEntity.ok().body("Signup Complete!, Please Enjoy Our Homepage!") :
                 ResponseEntity.badRequest().build();
     }
 
@@ -44,7 +37,7 @@ public class UserController {
     public ResponseEntity joinAdmin(@RequestBody @Valid SignUpDTO signUpDTO) {
         Long result = userService.joinAdmin(signUpDTO);
         return result != null ?
-                ResponseEntity.ok().body("회원가입을 축하합니다!") :
+                ResponseEntity.ok().body("Signup Complete!, Please Enjoy Our Homepage!") :
                 ResponseEntity.badRequest().build();
     }
 
@@ -52,7 +45,7 @@ public class UserController {
     public ResponseEntity joinDriver(@RequestBody @Valid SignUpDTO signUpDTO) {
         Long result = userService.joinDriver(signUpDTO);
         return result != null ?
-                ResponseEntity.ok().body("회원가입을 축하합니다!") :
+                ResponseEntity.ok().body("Signup Complete!, Please Enjoy Our Homepage!") :
                 ResponseEntity.badRequest().build();
     }
 

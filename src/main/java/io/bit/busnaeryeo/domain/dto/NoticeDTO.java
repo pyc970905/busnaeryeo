@@ -18,9 +18,7 @@ public class NoticeDTO {
     private Long id;
     private String title;
     private String content;
-
     private String writer;
-
     private User user;
 
     public Notice toEntity() {
